@@ -28,6 +28,7 @@
 #include <fstream>
 #include <sstream>
 #include <list>
+#include <vector>
 #include <cstdio>
 #include <stdarg.h>
 
@@ -714,10 +715,12 @@ namespace Yaml
 
     std::pair<const std::string &, Node &> Iterator::operator *()
     {
+        static const std::string empty;
+
         switch(m_Type)
         {
         case SequenceType:
-            return {"", *(static_cast<SequenceIteratorImp*>(m_pImp)->m_Iterator->second)};
+            return {empty, *(static_cast<SequenceIteratorImp*>(m_pImp)->m_Iterator->second)};
             break;
         case MapType:
             return {static_cast<MapIteratorImp*>(m_pImp)->m_Iterator->first,
@@ -728,7 +731,7 @@ namespace Yaml
         }
 
         g_NoneNode.Clear();
-        return {"", g_NoneNode};
+        return {empty, g_NoneNode};
     }
 
     Iterator & Iterator::operator ++ (int dummy)
@@ -865,10 +868,12 @@ namespace Yaml
 
     std::pair<const std::string &, const Node &> ConstIterator::operator *()
     {
+        static const std::string empty;
+
         switch(m_Type)
         {
         case SequenceType:
-            return {"", *(static_cast<SequenceConstIteratorImp*>(m_pImp)->m_Iterator->second)};
+            return {empty, *(static_cast<SequenceConstIteratorImp*>(m_pImp)->m_Iterator->second)};
             break;
         case MapType:
             return {static_cast<MapConstIteratorImp*>(m_pImp)->m_Iterator->first,
@@ -879,7 +884,7 @@ namespace Yaml
         }
 
         g_NoneNode.Clear();
-        return {"", g_NoneNode};
+        return {empty, g_NoneNode};
     }
 
     ConstIterator & ConstIterator::operator ++ (int dummy)
