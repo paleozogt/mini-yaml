@@ -23,6 +23,8 @@
 *
 */
 
+#pragma once
+
 #include "Yaml.hpp"
 #include <memory>
 #include <fstream>
@@ -80,35 +82,35 @@ namespace Yaml
     static void RemoveAllEscapeTokens(std::string & input);
 
     // Exception implementations
-    Exception::Exception(const std::string & message, const eType type) :
+    inline Exception::Exception(const std::string & message, const eType type) :
         std::runtime_error(message),
         m_Type(type)
     {
     }
 
-    Exception::eType Exception::Type() const
+    inline Exception::eType Exception::Type() const
     {
         return m_Type;
     }
 
-    const char * Exception::Message() const
+    inline const char * Exception::Message() const
     {
         return what();
     }
 
-    InternalException::InternalException(const std::string & message) :
+    inline InternalException::InternalException(const std::string & message) :
         Exception(message, InternalError)
     {
 
     }
 
-    ParsingException::ParsingException(const std::string & message) :
+    inline ParsingException::ParsingException(const std::string & message) :
         Exception(message, ParsingError)
     {
 
     }
 
-    OperationException::OperationException(const std::string & message) :
+    inline OperationException::OperationException(const std::string & message) :
         Exception(message, OperationError)
     {
 
@@ -642,13 +644,13 @@ namespace Yaml
 
 
     // Iterator class
-    Iterator::Iterator() :
+    inline Iterator::Iterator() :
         m_Type(None),
         m_pImp(nullptr)
     {
     }
 
-    Iterator::~Iterator()
+    inline Iterator::~Iterator()
     {
         if(m_pImp)
         {
@@ -667,12 +669,12 @@ namespace Yaml
         }
     }
 
-    Iterator::Iterator(const Iterator & it)
+    inline Iterator::Iterator(const Iterator & it)
     {
         *this = it;
     }
 
-    Iterator & Iterator::operator = (const Iterator & it)
+    inline Iterator & Iterator::operator = (const Iterator & it)
     {
         if(m_pImp)
         {
@@ -713,7 +715,7 @@ namespace Yaml
         return *this;
     }
 
-    std::pair<const std::string &, Node &> Iterator::operator *()
+    inline std::pair<const std::string &, Node &> Iterator::operator *()
     {
         static const std::string empty;
 
@@ -734,7 +736,7 @@ namespace Yaml
         return {empty, g_NoneNode};
     }
 
-    Iterator & Iterator::operator ++ (int dummy)
+    inline Iterator & Iterator::operator ++ (int dummy)
     {
         switch(m_Type)
         {
@@ -750,7 +752,7 @@ namespace Yaml
         return *this;
     }
 
-    Iterator & Iterator::operator -- (int dummy)
+    inline Iterator & Iterator::operator -- (int dummy)
     {
         switch(m_Type)
         {
@@ -766,7 +768,7 @@ namespace Yaml
         return *this;
     }
 
-    bool Iterator::operator == (const Iterator & it)
+    inline bool Iterator::operator == (const Iterator & it)
     {
         if(m_Type != it.m_Type)
         {
@@ -788,20 +790,20 @@ namespace Yaml
         return false;
     }
 
-    bool Iterator::operator != (const Iterator & it)
+    inline bool Iterator::operator != (const Iterator & it)
     {
         return !(*this == it);
     }
 
 
     // Const Iterator class
-    ConstIterator::ConstIterator() :
+    inline ConstIterator::ConstIterator() :
         m_Type(None),
         m_pImp(nullptr)
     {
     }
 
-    ConstIterator::~ConstIterator()
+    inline ConstIterator::~ConstIterator()
     {
         if(m_pImp)
         {
@@ -820,14 +822,14 @@ namespace Yaml
         }
     }
 
-    ConstIterator::ConstIterator(const ConstIterator & it) :
+    inline ConstIterator::ConstIterator(const ConstIterator & it) :
             m_Type(None),
             m_pImp(nullptr)
     {
         *this = it;
     }
 
-    ConstIterator & ConstIterator::operator = (const ConstIterator & it)
+    inline ConstIterator & ConstIterator::operator = (const ConstIterator & it)
     {
         if(m_pImp)
         {
@@ -868,7 +870,7 @@ namespace Yaml
         return *this;
     }
 
-    std::pair<const std::string &, const Node &> ConstIterator::operator *()
+    inline std::pair<const std::string &, const Node &> ConstIterator::operator *()
     {
         static const std::string empty;
 
@@ -889,7 +891,7 @@ namespace Yaml
         return {empty, g_NoneNode};
     }
 
-    ConstIterator & ConstIterator::operator ++ (int dummy)
+    inline ConstIterator & ConstIterator::operator ++ (int dummy)
     {
         switch(m_Type)
         {
@@ -905,7 +907,7 @@ namespace Yaml
         return *this;
     }
 
-    ConstIterator & ConstIterator::operator -- (int dummy)
+    inline ConstIterator & ConstIterator::operator -- (int dummy)
     {
         switch(m_Type)
         {
@@ -921,7 +923,7 @@ namespace Yaml
         return *this;
     }
 
-    bool ConstIterator::operator == (const ConstIterator & it)
+    inline bool ConstIterator::operator == (const ConstIterator & it)
     {
         if(m_Type != it.m_Type)
         {
@@ -943,72 +945,72 @@ namespace Yaml
         return false;
     }
 
-    bool ConstIterator::operator != (const ConstIterator & it)
+    inline bool ConstIterator::operator != (const ConstIterator & it)
     {
         return !(*this == it);
     }
 
 
     // Node class
-    Node::Node() :
+    inline Node::Node() :
         m_pImp(new NodeImp)
     {
     }
 
-    Node::Node(const Node & node) :
+    inline Node::Node(const Node & node) :
         Node()
     {
         *this = node;
     }
 
-    Node::Node(const std::string & value) :
+    inline Node::Node(const std::string & value) :
         Node()
     {
         *this = value;
     }
 
-    Node::Node(const char * value) :
+    inline Node::Node(const char * value) :
         Node()
     {
         *this = value;
     }
 
-    Node::~Node()
+    inline Node::~Node()
     {
         delete static_cast<NodeImp*>(m_pImp);
     }
 
-    Node::eType Node::Type() const
+    inline Node::eType Node::Type() const
     {
         return NODE_IMP->m_Type;
     }
 
-    bool Node::IsNone() const
+    inline bool Node::IsNone() const
     {
         return NODE_IMP->m_Type == Node::None;
     }
 
-    bool Node::IsSequence() const
+    inline bool Node::IsSequence() const
     {
         return NODE_IMP->m_Type == Node::SequenceType;
     }
 
-    bool Node::IsMap() const
+    inline bool Node::IsMap() const
     {
         return NODE_IMP->m_Type == Node::MapType;
     }
 
-    bool Node::IsScalar() const
+    inline bool Node::IsScalar() const
     {
         return NODE_IMP->m_Type == Node::ScalarType;
     }
 
-    void Node::Clear()
+    inline void Node::Clear()
     {
         NODE_IMP->Clear();
     }
 
-    size_t Node::Size() const
+    inline size_t Node::Size() const
     {
         if(TYPE_IMP == nullptr)
         {
@@ -1018,24 +1020,24 @@ namespace Yaml
         return TYPE_IMP->GetSize();
     }
 
-    Node & Node::Insert(const size_t index)
+    inline Node & Node::Insert(const size_t index)
     {
         NODE_IMP->InitSequence();
         return *TYPE_IMP->Insert(index);
     }
 
-    Node & Node::PushFront()
+    inline Node & Node::PushFront()
     {
         NODE_IMP->InitSequence();
         return *TYPE_IMP->PushFront();
     }
-    Node & Node::PushBack()
+    inline Node & Node::PushBack()
     {
         NODE_IMP->InitSequence();
         return *TYPE_IMP->PushBack();
     }
 
-    Node & Node::operator[](const size_t index)
+    inline Node & Node::operator[](const size_t index)
     {
         NODE_IMP->InitSequence();
         Node * pNode = TYPE_IMP->GetNode(index);
@@ -1047,13 +1049,13 @@ namespace Yaml
         return *pNode;
     }
 
-    Node & Node::operator[](const std::string & key)
+    inline Node & Node::operator[](const std::string & key)
     {
         NODE_IMP->InitMap();
         return *TYPE_IMP->GetNode(key);
     }
 
-    void Node::Erase(const size_t index)
+    inline void Node::Erase(const size_t index)
     {
         if(TYPE_IMP == nullptr || NODE_IMP->m_Type != Node::SequenceType)
         {
@@ -1063,7 +1065,7 @@ namespace Yaml
         return TYPE_IMP->Erase(index);
     }
 
-    void Node::Erase(const std::string & key)
+    inline void Node::Erase(const std::string & key)
     {
         if(TYPE_IMP == nullptr || NODE_IMP->m_Type != Node::MapType)
         {
@@ -1073,28 +1075,28 @@ namespace Yaml
         return TYPE_IMP->Erase(key);
     }
 
-    Node & Node::operator = (const Node & node)
+    inline Node & Node::operator = (const Node & node)
     {
         NODE_IMP->Clear();
         CopyNode(node, *this);
         return *this;
     }
 
-    Node & Node::operator = (const std::string & value)
+    inline Node & Node::operator = (const std::string & value)
     {
         NODE_IMP->InitScalar();
         TYPE_IMP->SetData(value);
         return *this;
     }
 
-    Node & Node::operator = (const char * value)
+    inline Node & Node::operator = (const char * value)
     {
         NODE_IMP->InitScalar();
         TYPE_IMP->SetData(value ? std::string(value) : "");
         return *this;
     }
 
-    Iterator Node::Begin()
+    inline Iterator Node::Begin()
     {
         Iterator it;
 
@@ -1124,7 +1126,7 @@ namespace Yaml
         return it;
     }
 
-    ConstIterator Node::Begin() const
+    inline ConstIterator Node::Begin() const
     {
         ConstIterator it;
 
@@ -1154,7 +1156,7 @@ namespace Yaml
         return it;
     }
 
-    Iterator Node::End()
+    inline Iterator Node::End()
     {
        Iterator it;
 
@@ -1184,7 +1186,7 @@ namespace Yaml
         return it;
     }
 
-    ConstIterator Node::End() const
+    inline ConstIterator Node::End() const
     {
        ConstIterator it;
 
@@ -1214,7 +1216,7 @@ namespace Yaml
         return it;
     }
 
-    const std::string & Node::AsString() const
+    inline const std::string & Node::AsString() const
     {
         if(TYPE_IMP == nullptr)
         {
@@ -1267,7 +1269,7 @@ namespace Yaml
         */
         void SetFlag(const eFlag flag)
         {
-            Flags |= FlagMask[static_cast<size_t>(flag)];
+            Flags |= getFlagMask()[static_cast<size_t>(flag)];
         }
 
         /**
@@ -1285,7 +1287,7 @@ namespace Yaml
         */
         void UnsetFlag(const eFlag flag)
         {
-            Flags &= ~FlagMask[static_cast<size_t>(flag)];
+            Flags &= ~getFlagMask()[static_cast<size_t>(flag)];
         }
 
         /**
@@ -1303,7 +1305,7 @@ namespace Yaml
         */
         bool GetFlag(const eFlag flag) const
         {
-            return Flags & FlagMask[static_cast<size_t>(flag)];
+            return Flags & getFlagMask()[static_cast<size_t>(flag)];
         }
 
         /**
@@ -1317,11 +1319,14 @@ namespace Yaml
                 return;
             }
 
-            unsigned char newFlags = from->Flags & (FlagMask[0] | FlagMask[1] | FlagMask[2]);
+            unsigned char newFlags = from->Flags & (getFlagMask()[0] | getFlagMask()[1] | getFlagMask()[2]);
             Flags |= newFlags;
         }
 
-        static const unsigned char FlagMask[3];
+        inline static const unsigned char* getFlagMask() {
+            static const unsigned char FlagMask[] = { 0x01, 0x02, 0x04 };
+            return FlagMask;
+        }
 
         std::string     Data;       ///< Data of line.
         size_t          No;         ///< Line number.
@@ -1333,9 +1338,6 @@ namespace Yaml
 
 
     };
-
-    const unsigned char ReaderLine::FlagMask[3] = { 0x01, 0x02, 0x04 };
-
 
     /**
     * @breif Implementation class of Yaml parsing.
@@ -1890,9 +1892,9 @@ namespace Yaml
             // Check if current line is a block scalar.
             unsigned char blockFlags = 0;
             bool isBlockScalar = IsBlockScalar(pLine->Data, pLine->No, blockFlags);
-            const bool newLineFlag = static_cast<bool>(blockFlags & ReaderLine::FlagMask[static_cast<size_t>(ReaderLine::ScalarNewlineFlag)]);
-            const bool foldedFlag = static_cast<bool>(blockFlags & ReaderLine::FlagMask[static_cast<size_t>(ReaderLine::FoldedScalarFlag)]);
-            const bool literalFlag = static_cast<bool>(blockFlags & ReaderLine::FlagMask[static_cast<size_t>(ReaderLine::LiteralScalarFlag)]);
+            const bool newLineFlag = static_cast<bool>(blockFlags & ReaderLine::getFlagMask()[static_cast<size_t>(ReaderLine::ScalarNewlineFlag)]);
+            const bool foldedFlag = static_cast<bool>(blockFlags & ReaderLine::getFlagMask()[static_cast<size_t>(ReaderLine::FoldedScalarFlag)]);
+            const bool literalFlag = static_cast<bool>(blockFlags & ReaderLine::getFlagMask()[static_cast<size_t>(ReaderLine::LiteralScalarFlag)]);
             size_t parentOffset = 0;
 
             // Find parent offset
@@ -2195,9 +2197,9 @@ namespace Yaml
                 }
                 else
                 {
-                    flags |= ReaderLine::FlagMask[static_cast<size_t>(ReaderLine::ScalarNewlineFlag)];
+                    flags |= ReaderLine::getFlagMask()[static_cast<size_t>(ReaderLine::ScalarNewlineFlag)];
                 }
-                flags |= ReaderLine::FlagMask[static_cast<size_t>(ReaderLine::LiteralScalarFlag)];
+                flags |= ReaderLine::getFlagMask()[static_cast<size_t>(ReaderLine::LiteralScalarFlag)];
                 return true;
             }
 
@@ -2212,9 +2214,9 @@ namespace Yaml
                 }
                 else
                 {
-                    flags |= ReaderLine::FlagMask[static_cast<size_t>(ReaderLine::ScalarNewlineFlag)];
+                    flags |= ReaderLine::getFlagMask()[static_cast<size_t>(ReaderLine::ScalarNewlineFlag)];
                 }
-                flags |= ReaderLine::FlagMask[static_cast<size_t>(ReaderLine::FoldedScalarFlag)];
+                flags |= ReaderLine::getFlagMask()[static_cast<size_t>(ReaderLine::FoldedScalarFlag)];
                 return true;
             }
 
@@ -2226,7 +2228,7 @@ namespace Yaml
     };
 
     // Parsing functions
-    void Parse(Node & root, const char * filename)
+    inline void Parse(Node & root, const char * filename)
     {
         std::ifstream f(filename, std::ifstream::binary);
         if (f.is_open() == false)
@@ -2245,7 +2247,7 @@ namespace Yaml
         Parse(root, data.get(), fileSize);
     }
 
-    void Parse(Node & root, std::iostream & stream)
+    inline void Parse(Node & root, std::iostream & stream)
     {
         ParseImp * pImp = nullptr;
 
@@ -2262,13 +2264,13 @@ namespace Yaml
         }
     }
 
-    void Parse(Node & root, const std::string & string)
+    inline void Parse(Node & root, const std::string & string)
     {
         std::stringstream ss(string);
         Parse(root, ss);
     }
 
-    void Parse(Node & root, const char * buffer, const size_t size)
+    inline void Parse(Node & root, const char * buffer, const size_t size)
     {
         std::stringstream ss(std::string(buffer, size));
         Parse(root, ss);
@@ -2276,7 +2278,7 @@ namespace Yaml
 
 
     // Serialize configuration structure.
-    SerializeConfig::SerializeConfig(const size_t spaceIndentation,
+    inline SerializeConfig::SerializeConfig(const size_t spaceIndentation,
                                      const size_t scalarMaxLength,
                                      const bool sequenceMapNewline,
                                      const bool mapScalarNewline) :
@@ -2289,7 +2291,7 @@ namespace Yaml
 
 
     // Serialization functions
-    void Serialize(const Node & root, const char * filename, const SerializeConfig & config)
+    inline void Serialize(const Node & root, const char * filename, const SerializeConfig & config)
     {
         std::stringstream stream;
         Serialize(root, stream, config);
@@ -2304,7 +2306,7 @@ namespace Yaml
         f.close();
     }
 
-    size_t LineFolding(const std::string & input, std::vector<std::string> & folded, const size_t maxLength)
+    inline size_t LineFolding(const std::string & input, std::vector<std::string> & folded, const size_t maxLength)
     {
         folded.clear();
         if(input.size() == 0)
@@ -2343,7 +2345,7 @@ namespace Yaml
         return folded.size();
     }
 
-    static void SerializeLoop(const Node & node, std::iostream & stream, bool useLevel, const size_t level, const SerializeConfig & config)
+    inline void SerializeLoop(const Node & node, std::iostream & stream, bool useLevel, const size_t level, const SerializeConfig & config)
     {
         const size_t indention = config.SpaceIndentation;
 
@@ -2493,7 +2495,7 @@ namespace Yaml
         }
     }
 
-    void Serialize(const Node & root, std::iostream & stream, const SerializeConfig & config)
+    inline void Serialize(const Node & root, std::iostream & stream, const SerializeConfig & config)
     {
         if(config.SpaceIndentation < 2)
         {
@@ -2503,7 +2505,7 @@ namespace Yaml
         SerializeLoop(root, stream, false, 0, config);
     }
 
-    void Serialize(const Node & root, std::string & string, const SerializeConfig & config)
+    inline void Serialize(const Node & root, std::string & string, const SerializeConfig & config)
     {
         std::stringstream stream;
         Serialize(root, stream, config);
@@ -2513,27 +2515,27 @@ namespace Yaml
 
 
     // Static function implementations
-    std::string ExceptionMessage(const std::string & message, ReaderLine & line)
+    inline std::string ExceptionMessage(const std::string & message, ReaderLine & line)
     {
         return message + std::string(" Line ") + std::to_string(line.No) + std::string(": ") + line.Data;
     }
 
-    std::string ExceptionMessage(const std::string & message, ReaderLine & line, const size_t errorPos)
+    inline std::string ExceptionMessage(const std::string & message, ReaderLine & line, const size_t errorPos)
     {
         return message + std::string(" Line ") + std::to_string(line.No) + std::string(" column ") + std::to_string(errorPos + 1) + std::string(": ") + line.Data;
     }
 
-    std::string ExceptionMessage(const std::string & message, const size_t errorLine, const size_t errorPos)
+    inline std::string ExceptionMessage(const std::string & message, const size_t errorLine, const size_t errorPos)
     {
         return message + std::string(" Line ") + std::to_string(errorLine) + std::string(" column ") + std::to_string(errorPos);
     }
 
-    std::string ExceptionMessage(const std::string & message, const size_t errorLine, const std::string & data)
+    inline std::string ExceptionMessage(const std::string & message, const size_t errorLine, const std::string & data)
     {
         return message + std::string(" Line ") + std::to_string(errorLine) + std::string(": ") + data;
     }
 
-    bool FindQuote(const std::string & input, size_t & start, size_t & end, size_t searchPos)
+    inline bool FindQuote(const std::string & input, size_t & start, size_t & end, size_t searchPos)
     {
         start = end = std::string::npos;
         size_t qPos = searchPos;
@@ -2576,7 +2578,7 @@ namespace Yaml
         return false;
     }
 
-    size_t FindNotCited(const std::string & input, char token, size_t & preQuoteCount)
+    inline size_t FindNotCited(const std::string & input, char token, size_t & preQuoteCount)
     {
         preQuoteCount = 0;
         size_t tokenPos = input.find_first_of(token);
@@ -2638,13 +2640,13 @@ namespace Yaml
         return tokenPos;
     }
 
-    size_t FindNotCited(const std::string & input, char token)
+    inline size_t FindNotCited(const std::string & input, char token)
     {
         size_t dummy = 0;
         return FindNotCited(input, token, dummy);
     }
 
-    bool ValidateQuote(const std::string & input)
+    inline bool ValidateQuote(const std::string & input)
     {
         if(input.size() == 0)
         {
@@ -2709,7 +2711,7 @@ namespace Yaml
         return token == 0;
     }
 
-    void CopyNode(const Node & from, Node & to)
+    inline void CopyNode(const Node & from, Node & to)
     {
         const Node::eType type = from.Type();
 
@@ -2739,12 +2741,12 @@ namespace Yaml
         }
     }
 
-    bool ShouldBeCited(const std::string & key)
+    inline bool ShouldBeCited(const std::string & key)
     {
         return key.find_first_of("\":{}[],&*#?|-<>=!%@") != std::string::npos;
     }
 
-    void AddEscapeTokens(std::string & input, const std::string & tokens)
+    inline void AddEscapeTokens(std::string & input, const std::string & tokens)
     {
         for(auto it = tokens.begin(); it != tokens.end(); it++)
         {
@@ -2759,7 +2761,7 @@ namespace Yaml
         }
     }
 
-    void RemoveAllEscapeTokens(std::string & input)
+    inline void RemoveAllEscapeTokens(std::string & input)
     {
         size_t found = input.find_first_of("\\");
         while(found != std::string::npos)

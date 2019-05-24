@@ -20,10 +20,10 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\examples\FirstExample.cpp" />
-    <ClCompile Include="..\..\yaml\Yaml.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\yaml\Yaml.hpp" />
+    <ClInclude Include="..\..\yaml\YamlImpl.hpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>

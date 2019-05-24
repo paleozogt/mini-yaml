@@ -1,5 +1,5 @@
 #include "gtest/gtest.h"
-#include "../yaml/Yaml.hpp"
+#include "../yaml/YamlImpl.hpp"
 #include <iostream>
 #include <fstream>
 

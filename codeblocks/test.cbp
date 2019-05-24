@@ -46,7 +46,7 @@
 			<Add option="-Wall" />
 		</Compiler>
 		<Unit filename="../test/test.cpp" />
-		<Unit filename="../yaml/Yaml.cpp" />
+		<Unit filename="../yaml/YamlImpl.hpp" />
 		<Unit filename="../yaml/Yaml.hpp" />
 		<Extensions>
 			<envvars />
