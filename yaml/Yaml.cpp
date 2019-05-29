@@ -820,7 +820,9 @@ namespace Yaml
         }
     }
 
-    ConstIterator::ConstIterator(const ConstIterator & it)
+    ConstIterator::ConstIterator(const ConstIterator & it) :
+            m_Type(None),
+            m_pImp(nullptr)
     {
         *this = it;
     }
