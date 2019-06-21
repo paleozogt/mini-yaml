@@ -1459,7 +1459,7 @@ namespace Yaml
                 // Validate characters.
                 for (size_t i = 0; i < line.size(); i++)
                 {
-                    if (line[i] != '\t' && (line[i] < 32 || line[i] > 125))
+                    if (line[i] != '\t' && (line[i] < 32 || line[i] > 126))
                     {
                         throw ParsingException(ExceptionMessage(g_ErrorInvalidCharacter, lineNo, i + 1));
                     }
@@ -2030,6 +2030,8 @@ namespace Yaml
             if(data.size() && (data[0] == '"' || data[0] == '\''))
             {
                 data = data.substr(1, data.size() - 2 );
+            } else if (data == "~") {
+                data = "";
             }
 
             node = data;
@@ -2648,6 +2650,8 @@ namespace Yaml
         {
             return true;
         }
+
+        if (input == "\"\"" || input == "''") return true;
 
         char token = 0;
         size_t searchPos = 0;

@@ -630,6 +630,24 @@ TEST(Parse, Valid)
     }
 }
 
+TEST(Parse, EmptyDoubleQuotes) {
+    Yaml::Node node;
+    Yaml::Parse(node, std::string("a: \"\""));
+    ASSERT_EQ(node["a"].As<std::string>(), "");
+}
+
+TEST(Parse, EmptySingleQuotes) {
+    Yaml::Node node;
+    Yaml::Parse(node, std::string("a: ''"));
+    ASSERT_EQ(node["a"].As<std::string>(), "");
+}
+
+TEST(Parse, EmptyTilde) {
+    Yaml::Node node;
+    Yaml::Parse(node, std::string("a: ~"));
+    ASSERT_EQ(node["a"].As<std::string>(), "");
+}
+
 TEST(Iterator, Iterator)
 {
     Yaml::Node root;
